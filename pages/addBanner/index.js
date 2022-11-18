@@ -1,6 +1,6 @@
 import BannersSection from "@/components/addBanners/BannersSection";
 import Main from "@/components/layout/main";
-import { Button, message, Modal } from "antd";
+import { Button, message, Modal, Progress } from "antd";
 import axios from "axios";
 import Image from "next/image";
 import React, { useEffect, useRef } from "react";
@@ -16,6 +16,7 @@ function AddBanner() {
     const [banners, setBanners] = useState([]);
     const [banners2, setBanners2] = useState([]);
     const [banners3, setBanners3] = useState([]);
+    const [progressNum, setProgressNum] = useState(0);
 
     const {
         data = [],
@@ -76,6 +77,9 @@ function AddBanner() {
     const handleImage = (e) => {
         e.preventDefault();
         setImageName(e.target.files[0]);
+        setTimeout(() => {
+            setProgressNum(100);
+        }, 400);
     };
     const handleAddBanner = (e) => {
         e.preventDefault();
@@ -94,6 +98,7 @@ function AddBanner() {
             executeFetch();
             executeFetch2();
             executeFetch3();
+            setProgressNum(0);
         } else if (addData?.status === false) {
             message.error(
                 addError ?? "Something went wrong! Please try again later"
@@ -172,6 +177,11 @@ function AddBanner() {
                                         {/* Image name: <strong>{imageName}</strong> */}
                                     </span>
                                 </label>
+                                <Progress
+                                    type="circle"
+                                    percent={progressNum}
+                                    format={() => "Done"}
+                                />
                                 <p>add number for banner</p>
                                 <select name="BannerNumber" ref={numRef}>
                                     <option value={"0"}>1</option>
